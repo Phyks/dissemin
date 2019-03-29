@@ -13,7 +13,30 @@
     {% endblock metaTags %}
     <link rel="stylesheet" href="{% static "libs/bootstrap/css/bootstrap.min.css" %}" />
     <link rel="stylesheet" href="{% static "libs/editable/css/bootstrap-editable.css" %}" />
-    <link rel="stylesheet" href="{% static "style/style.css" %}" />
+<style>
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.form-control-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 7px 0 0 13px;
+  transition: all 200ms;
+  opacity: 0.5;
+  z-index: 1000;
+}
+
+.form-control:focus + .form-control-placeholder,
+.form-control:valid + .form-control-placeholder {
+  font-size: 75%;
+  transform: translate3d(0, -100%, 0);
+  opacity: 1;
+}
+</style>
+<link rel="stylesheet" href="{% static "style/style.css" %}" />
     <link rel="stylesheet" href="{% static "style/mobile.css" %}" media="screen and (max-width: 800px)" />
     <link rel="apple-touch-icon" sizes="57x57"
                            href="{% static "favicon/apple-icon-57x57.png" %}" />

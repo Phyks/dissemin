@@ -1154,6 +1154,29 @@ a.stats_caption_line:hover {
 	max-width:100%;
 }
 
+#welcome #searchPapersTitle {
+    margin-top: 50px;
+}
+
+#welcome #searchPapersTitle .form-control-placeholder {
+    color: black;
+    padding-left: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-right: 12px;
+    max-width: calc(100% - 40px);
+    max-height: 40px;
+    overflow: hidden;
+    font-size: 11px;
+    box-sizing: border-box;
+    bottom: auto;
+    margin-bottom: 0px;
+}
+
+#welcome #searchPapersTitle .btn-search {
+    width: 40px;
+}
+
 #welcome #advancedSearchP {
     width: 100%;
     text-align: right;

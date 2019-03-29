@@ -28,13 +28,16 @@
     </p>
 
     <form method="get" action="{% url 'search' %}">
-        <div class="input-group" id="searchPapersTitle">
-            {% render_field search_form.authors class="form-control" %}
-            <label class="input-group-btn">
-                <button type="submit" class="btn btn-primary btn-search" aria-label="{% trans "Search" %}">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                </button>
-            </label>
+        <div class"form-group">
+            <div class="input-group" id="searchPapersTitle">
+                {% render_field search_form.authors class="form-control" required="required" placeholder="" %}
+                <label class="form-control-placeholder" for="id_authors">Which author are you looking for?</label>
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-primary btn-search" aria-label="{% trans "Search" %}">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+                </span>
+            </div>
         </div>
 
         <p id="advancedSearchP">
