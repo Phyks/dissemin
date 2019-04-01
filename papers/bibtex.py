@@ -19,13 +19,16 @@
 # USA.
 
 
+import io
 import re
 import logging
 
 import bibtexparser
 import bibtexparser.customization
 
+from bibtexparser.bibdatabase import BibDatabase
 from bibtexparser.bparser import BibTexParser
+from bibtexparser.bwriter import BibTexWriter
 from papers.name import parse_comma_name
 
 logger = logging.getLogger('dissemin.' + __name__)
@@ -36,19 +39,19 @@ ET_AL_RE = re.compile(r'( and )?\s*et\s+al\.?\s*$', re.IGNORECASE | re.UNICODE)
 OTHERS_RE = re.compile(r'( and )?\s*others\.?\s*$', re.IGNORECASE | re.UNICODE)
 
 PAPER_TYPE_TO_BIBTEX = {
-   'journal-article': 'article',
-   'proceedings-article': 'inproceedings',
-   'book-chapter': 'incollection',
-   'book': 'book',
-   'journal-issue': 'book',
-   'proceedings': 'proceedings',
-   'reference-entry': 'misc',
-   'poster': 'misc',
-   'report': 'article',
-   'thesis': 'phdthesis',
-   'dataset': 'misc',
-   'preprint': 'article',
-   'other': 'misc',
+    'journal-article': 'article',
+    'proceedings-article': 'inproceedings',
+    'book-chapter': 'incollection',
+    'book': 'book',
+    'journal-issue': 'book',
+    'proceedings': 'proceedings',
+    'reference-entry': 'misc',
+    'poster': 'misc',
+    'report': 'article',
+    'thesis': 'phdthesis',
+    'dataset': 'misc',
+    'preprint': 'article',
+    'other': 'misc',
 }
 
 
@@ -91,9 +94,32 @@ def parse_bibtex(bibtex):
     parser.customization = customizations
     db = bibtexparser.loads(bibtex, parser=parser)
 
-    if len(db.entries) == 0:
+    if not db.entries:
         raise ValueError('No bibtex item was parsed.')
     if len(db.entries) > 1:
-        logger.warning("%d bibtex items, defaulting to first one" % len(db.entries))
+        logger.warning("%d bibtex items, defaulting to first one",
+                       len(db.entries))
 
     return db.entries[0]
+
+
+def format_paper_citation_dict(citation, indent='  '):
+    """
+    Format a citation dict for a paper or a list of papers into a BibTeX
+    record string.
+
+    :param citation: A ``Paper`` citation dict or list of such dicts.
+    :param indent: Indentation to be used in BibTeX output.
+    """
+    if isinstance(citation, dict):
+        entries = [citation]
+    else:
+        entries = citation
+
+    writer = BibTexWriter()
+    writer.indent = indent
+    with io.StringIO('') as bibfile:
+        db = BibDatabase()
+        db.entries = entries
+        bibfile.write(writer.write(db))
+        return bibfile.getvalue().strip()
