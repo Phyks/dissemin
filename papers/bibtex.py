@@ -19,6 +19,7 @@
 # USA.
 
 
+import collections
 import io
 import re
 import logging
@@ -115,6 +116,14 @@ def format_paper_citation_dict(citation, indent='  '):
         entries = [citation]
     else:
         entries = citation
+
+    # Handle conflicting ids for entries
+    entries_ids = collections.defaultdict(lambda: 0)
+    for idx, entry in enumerate(entries):
+        entry_id = entry['ID']
+        entries_ids[entry_id] += 1
+        if entries_ids[entry_id] > 1:
+            entry['ID'] = '%s_%s' % (entry_id, entries_ids[entry_id])
 
     writer = BibTexWriter()
     writer.indent = indent
