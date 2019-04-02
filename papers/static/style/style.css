@@ -281,6 +281,11 @@ li
     margin-right: 15px;
 }
 
+.searchFilters + .ulContainer,
+.searchPages + .ulContainer {
+    margin-top: 20px;
+}
+
 .listYear
 {
     float:right;
@@ -1003,12 +1008,17 @@ a.stats_caption_line:hover {
 }
 
 /* Search pages buttons */
+.searchFilters .dropdown {
+    display: inline-block;
+}
+
 .searchPages {
     text-align: center;
 }
 
 .searchPages .pagination {
     margin-top: 0;
+    margin-bottom: 0;
 }
 
 /* Editables */

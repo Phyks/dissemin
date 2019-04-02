@@ -46,14 +46,21 @@
     </div>
 </div>
 
-<div class="row">
-    <form method="get" action="{{ request.GET.urlencode }}" onChange="$(this).submit()" class="col-xs-6">
-        <div class="form-group form-inline" id="searchPapersSortBy">
-            {{ form.reverse_order.errors }}
-            <label for="{{ form.sort_by.id_for_label }}">{% trans "Sort by" %}</label>
-            {% render_field form.sort_by class="form-control tightForm" %}
+<div class="row searchFilters">
+    <div class="col-xs-6">
+        {% trans "Sort by" %}
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                {{ current_sort_by }}
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                {% for option in form.sort_by %}
+                <li><a href="?{{ search_params_without_sort_by }}&sort_by={{ option.data.value }}">{{ option.data.label }}</a></li>
+                {% endfor %}
+            </ul>
         </div>
-    </form>
+    </div>
     <div class="col-xs-6 text-right">
         <a href="#" data-toggle="modal" data-target="#exportCitationModal" class="btn btn-primary">{% trans "Export citations" %}</a>
     </div>
@@ -65,9 +72,7 @@
  {% ifchanged paper.year %}
  {% if not forloop.first %}</ul></div>{% endif %}
     <div class="ulContainer">
-    {% if not form.sort_by.value %}
     <div class="listYear">{{ paper.year }}</div>
-    {% endif %}
     <ul class="withoutTriangles">
  {% endifchanged %}
     <li class="pubItem" id="paper-{{ paper.id }}">
