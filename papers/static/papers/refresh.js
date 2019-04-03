@@ -304,9 +304,10 @@ function init_paper_module (config) {
       refreshPapers()
     }
     fillForm('#searchPapers', query)
+    fillForm('#searchPapersStatistics', query)
   }
 
-  $('#searchPapers').submit(function (e) {
+  $('#searchPapers, #searchPapersStatistics').submit(function (e) {
     e.preventDefault()
     var $inputs = $(':input', this)
     // Remove empty parameters from queries for cleaner URLs.
