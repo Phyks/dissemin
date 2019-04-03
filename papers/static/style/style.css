@@ -1001,11 +1001,6 @@ a.stats_caption_line:hover {
     font-weight: bold;
 }
 
-#searchPapersSortBy select {
-    width: auto;
-    display: inline-block;
-}
-
 /* Search features */
 .searchPages {
     text-align: center;
