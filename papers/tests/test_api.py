@@ -130,22 +130,22 @@ class PaperApiTest(JsonRenderingTest):
 
     def test_bibtex_formatting_researcher(self):
         bibtex_output = """@inproceedings{Amarilli2015,
-  author = {Amarilli, Antoine and Benedikt, Michael},
-  doi = {10.1109/lics.2015.37},
-  journal = {2015 30th Annual ACM/IEEE Symposium on Logic in Computer Science},
-  month = {jul},
-  title = {Finite Open-World Query Answering with Number Restrictions},
-  url = {https://doi.org/10.1109/lics.2015.37},
-  year = {2015}
-}
-
-@inproceedings{Amarilli2015_2,
   author = {Amarilli, Antoine},
   doi = {10.1145/2744680.2744690},
   journal = {Proceedings of the 2015 ACM SIGMOD on PhD Symposium - SIGMOD '15 PhD Symposium},
   month = {jan},
   title = {Structurally Tractable Uncertain Data},
   url = {https://doi.org/10.1145/2744680.2744690},
+  year = {2015}
+}
+
+@inproceedings{Amarilli2015_2,
+  author = {Amarilli, Antoine and Benedikt, Michael},
+  doi = {10.1109/lics.2015.37},
+  journal = {2015 30th Annual ACM/IEEE Symposium on Logic in Computer Science},
+  month = {jul},
+  title = {Finite Open-World Query Answering with Number Restrictions},
+  url = {https://doi.org/10.1109/lics.2015.37},
   year = {2015}
 }"""
         r1 = Researcher.create_by_name('John', 'Doe')
