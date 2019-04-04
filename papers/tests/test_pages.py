@@ -25,6 +25,7 @@ import datetime
 import pytest
 import html5lib
 from mock import patch
+from tidylib import tidy_document
 
 from django.urls import reverse
 import django.test
@@ -48,6 +49,7 @@ from papers.doi import doi_to_url
 
 
 class RenderingTest(django.test.TestCase):
+    maxDiff = None  # Full output of HTML5-Tidy errors
 
     def setUp(self):
         super(RenderingTest, self).setUp()
@@ -64,6 +66,12 @@ class RenderingTest(django.test.TestCase):
             print(resp.content)
             print("HTML validation error: "+str(e))
             raise e
+        # Check HTML markup with HTML5-Tidy
+        document, errors = tidy_document(resp.content, options={
+            'drop-empty-elements': 0
+        })
+        # Only check for HTML markup errors
+        self.assertNotIn('Error', errors)
 
     def getPage(self, *args, **kwargs):
         urlargs = kwargs.copy()
