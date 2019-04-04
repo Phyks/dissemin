@@ -218,30 +218,19 @@ $(function(){
     <form method="get" action="." id="searchPapersStatistics" onChange="$(this).submit()">
         <div class="form-group" id="searchPaperCombinedStatus">
             <!-- Keep track of external GET parameters -->
-            {% if form.q.value %}
-                <input type="hidden" name="q" value="{{ form.q.value }}"/>
-            {% endif %}
-            {% if form.authors.value %}
-                <input type="hidden" name="authors" value="{{ form.authors.value }}"/>
-            {% endif %}
-            {% if form.pub_after.value %}
-                <input type="hidden" name="authors" value="{{ form.pub_after.value }}"/>
-            {% endif %}
-            {% if form.pub_before.value %}
-                <input type="hidden" name="authors" value="{{ form.pub_before.value }}"/>
-            {% endif %}
-            {% for value in form.doctypes.value %}
-                <input type="hidden" name="doctypes" value="{{ value }}"/>
+            <input type="hidden" class="getStorage" name="q" value="{{ form.q.value|default:"" }}"/>
+            <input type="hidden" class="getStorage" name="authors" value="{{ form.authors.value|default:""}}"/>
+            <input type="hidden" class="getStorage" name="pub_after" value="{{ form.pub_after.value|default:""}}"/>
+            <input type="hidden" class="getStorage" name="pub_before" value="{{ form.pub_before.value|default:""}}"/>
+            <input type="hidden" class="getStorage" name="sort_by" value="{{ form.sort_by.value|default:"" }}"/>
+            {% for item in form.doctypes %}
+                <input type="hidden" class="getStorage" name="doctypes" value="{% if item.data.value in form.doctypes.value %}{{ item.data.value }}{% endif %}"/>
             {% endfor %}
             {% if request.user.is_superuser %}
-                {% if form.visible.value %}
-                    <input type="hidden" name="visible" value="{{ form.visible.value }}"/>
-                {% endif %}
-                {% if form.availability.value %}
-                    <input type="hidden" name="availability" value="{{ form.availability.value }}"/>
-                {% endif %}
-                {% for value in form.oa_status.value %}
-                    <input type="hidden" name="oa_status" value="{{ value }}"/>
+                <input type="hidden" class="getStorage" name="visible" value="{{ form.visible.value|default:"" }}"/>
+                <input type="hidden" class="getStorage" name="availability" value="{{ form.availability.value|default:"" }}"/>
+                {% for item in form.oa_status %}
+                    <input type="hidden" class="getStorage" name="oa_status" value="{% if item.data.value in form.oa_status.value %}{{ item.data.value }}{% endif %}"/>
                 {% endfor %}
             {% endif %}
             {% with combined_status_form=True %}
@@ -262,13 +251,12 @@ $(function(){
 <div class="detailsContent">
     <p class="display-inline-block">{% trans "Sort by" %}</p>
     <div class="dropdown display-inline-block sort-by-dropdown">
-        <button class="btn btn-default dropdown-toggle" type="button" id="sortByDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            {{ current_sort_by }}
-            <span class="caret"></span>
+        <button class="btn btn-default dropdown-toggle" type="button" id="sortByDropdown" data-toggle="dropdown" aria-expanded="false">
+            <span class="btn-label">{{ current_sort_by }}</span> <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" aria-labelledby="sortByDropdown">
             {% for option in form.sort_by %}
-            <li><a href="?{{ search_params_without_sort_by }}&amp;sort_by={{ option.data.value }}">{{ option.data.label }}</a></li>
+            <li><a href="?{{ search_params_without_sort_by }}&amp;sort_by={{ option.data.value }}" data-sort-by="{{ option.data.value }}">{{ option.data.label }}</a></li>
             {% endfor %}
         </ul>
     </div>
@@ -279,12 +267,10 @@ $(function(){
 <div class="detailsContent">
     <form method="get" action="." id="searchPapers" onChange="$(this).submit()">
         <!-- Keep track of external GET parameters -->
-        {% for value in form.status.value %}
-            <input type="hidden" name="status" value="{{ value }}"/>
+        {% for item in form.status %}
+            <input type="hidden" class="getStorage" name="status" value="{% if item.data.value in form.status.value %}{{ item.data.value }}{% endif %}"/>
         {% endfor %}
-        {% if form.sort_by.value %}
-            <input type="hidden" name="sort_by" value="{{ form.sort_by.value }}"/>
-        {% endif %}
+        <input type="hidden" class="getStorage" name="sort_by" value="{{ form.sort_by.value|default:"" }}"/>
         <!-- Actual refine search fields -->
         <div class="form-group" id="searchPapersName">
             <label for="{{ form.q.id_for_label }}">
